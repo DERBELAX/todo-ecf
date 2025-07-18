@@ -64,4 +64,17 @@ describe('📦 todoController (unit tests)', () => {
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ message: 'Todo not found' });
   });
+
+  test('createTodo retourne une erreur 400 si la sauvegarde échoue', async () => {
+  req.body = { text: 'Échec' };
+
+  const saveMock = jest.fn().mockRejectedValue(new Error('Erreur de sauvegarde'));
+  Todo.mockImplementation(() => ({ save: saveMock }));
+
+  await controller.createTodo(req, res);
+
+  expect(res.status).toHaveBeenCalledWith(400);
+  expect(res.json).toHaveBeenCalledWith({ message: 'Erreur de sauvegarde' });
+});
+
 });
