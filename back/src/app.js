@@ -15,7 +15,7 @@ app.use(express.json());
 // Routes
 app.use('/api/todos', todoRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5001;
 
 let server;
 
