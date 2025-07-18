@@ -68,4 +68,11 @@ describe('Integration - todoRoutes', () => {
 
     Todo.findById.mockRestore();
   });
+  test('POST /api/todos sans texte retourne une erreur 400', async () => {
+  const res = await request(app).post('/api/todos').send({});
+
+  expect(res.statusCode).toBe(400);
+  expect(res.body.message).toBeDefined();
+});
+
 });
