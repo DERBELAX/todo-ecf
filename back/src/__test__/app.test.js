@@ -29,4 +29,32 @@ describe('Intégration serveur Express', () => {
     expect(res.body.text).toBe('Tâche test');
     expect(res.body).toHaveProperty('_id');
   });
+
+  test('PUT /api/todos/:id modifie une tâche', async () => {
+    const todo = await Todo.create({ text: 'À faire', completed: false });
+
+    const res = await request(app)
+      .put(`/api/todos/${todo._id}`)
+      .send({ completed: true });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.completed).toBe(true);
+  });
+
+ test('POST /api/todos retourne une erreur si le champ text est vide', async () => {
+  const res = await request(app).post('/api/todos').send({});
+
+  expect(res.statusCode).toBe(400); 
+  expect(res.body.message).toBeDefined();
+});
+
+
+  test('POST /api/todos retourne 400 si texte manquant', async () => {
+    const res = await request(app)
+      .post('/api/todos')
+      .send({});
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBeDefined();
+  });
 });
